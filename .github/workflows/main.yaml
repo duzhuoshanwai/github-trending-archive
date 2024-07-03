@@ -1,5 +1,8 @@
 name: run main.py
 
+permissions:
+  contents: write
+
 on:
   schedule:
     - cron: '10 11 * * *' # At 11:00 Everday
