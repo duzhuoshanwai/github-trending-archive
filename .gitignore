@@ -1,0 +1,5 @@
+.venv/
+test.ipynb
+data/*
+__pychache__/
+*.pyc
