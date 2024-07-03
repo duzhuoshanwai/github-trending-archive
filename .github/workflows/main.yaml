@@ -5,7 +5,7 @@ permissions:
 
 on:
   schedule:
-    - cron: '10 11 * * *' # At 11:00 Everday
+    - cron: '33 * * * *' # At 11:00 Everday
 
 jobs:
   build:
