@@ -14,7 +14,7 @@ on:
       tags:
         description: 'Test scenario tags'
   schedule:
-    - cron: '33 * * * *' # At 11:00 Everday
+    - cron: '10 11 * * *' # At 11:00 Everday
 
 jobs:
   build:
