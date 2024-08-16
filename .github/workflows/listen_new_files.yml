@@ -1,6 +1,6 @@
 # GitHub Actions 工作流：监听新文件并发送 Webhook
 # 此工作流在每次推送到仓库时触发。
-# 它会调用一个 Python 脚本来检测新增文件，并将这些文件的原始链接通过 POST 请求发送到指定的 Webhook URL。
+# 它会调用一个 Python 脚本来发送指定格式的 POST 请求到 Webhook URL。
 
 name: 监听新文件并发送 Webhook
 
@@ -19,7 +19,7 @@ jobs:
       - name: 设置 Python 环境
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'  # 指定 Python 版本
+          python-version: '3.x'  # 指定 Python 版本
 
       - name: 安装依赖
         run: pip install requests  # 如果脚本需要其他依赖，可以在此处安装

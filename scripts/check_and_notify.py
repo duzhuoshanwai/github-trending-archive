@@ -1,40 +1,34 @@
 import os
 import subprocess
 import requests
+from datetime import datetime
 
 # 获取仓库信息和当前提交的 SHA 值
-REPO = os.getenv('GITHUB_REPOSITORY')
-SHA = os.getenv('GITHUB_SHA')
 WEBHOOK_URL = os.getenv('WEBHOOK_URL')  # 从环境变量获取 Webhook URL
 
-def get_new_files():
-    # 使用 Git 命令获取新增的文件列表
-    result = subprocess.run(['git', 'diff', '--name-status', 'HEAD~1', 'HEAD'], stdout=subprocess.PIPE)
-    files = result.stdout.decode('utf-8').splitlines()
-    new_files = [line.split('\t')[1] for line in files if line.startswith('A')]
-    return new_files
+def send_webhook():
+    # 获取当前日期并格式化为 YYYY-MM 和 YYYY-MM-DD
+    now = datetime.now()
+    yyyy_mm = now.strftime('%Y-%m')
+    yyyy_mm_dd = now.strftime('%Y-%m-%d')
 
-def send_webhook(file, raw_url):
-    # 发送 POST 请求到 Webhook
+    # 构建 GitHub 文件的 URL
+    url = f'https://github.com/duzhuoshanwai/github-trending-archive/tree/master/data/{yyyy_mm}/{yyyy_mm_dd}.md'
+
+    # 构建 JSON payload
     payload = {
-        'file': file,
-        'raw_url': raw_url
+        'url': url
     }
+
+    # 发送 POST 请求到 Webhook
     response = requests.post(WEBHOOK_URL, json=payload)
     if response.status_code == 200:
-        print(f"成功发送通知: {file}")
+        print(f"成功发送通知: {url}")
     else:
-        print(f"发送通知失败: {file}，状态码: {response.status_code}")
+        print(f"发送通知失败，状态码: {response.status_code}")
 
 def main():
-    new_files = get_new_files()
-    if not new_files:
-        print("没有新文件被添加。")
-        return
-
-    for file in new_files:
-        raw_url = f"https://raw.githubusercontent.com/{REPO}/{SHA}/{file}"
-        send_webhook(file, raw_url)
+    send_webhook()
 
 if __name__ == '__main__':
     main()
