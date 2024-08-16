@@ -1,0 +1,30 @@
+# GitHub Actions 工作流：监听新文件并发送 Webhook
+# 此工作流在每次推送到仓库时触发。
+# 它会调用一个 Python 脚本来检测新增文件，并将这些文件的原始链接通过 POST 请求发送到指定的 Webhook URL。
+
+name: 监听新文件并发送 Webhook
+
+on:
+  push:
+    paths:
+      - '**/*'  # 监听所有路径的变化
+
+jobs:
+  file_listener:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库内容
+        uses: actions/checkout@v3
+
+      - name: 设置 Python 环境
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'  # 指定 Python 版本
+
+      - name: 安装依赖
+        run: pip install requests  # 如果脚本需要其他依赖，可以在此处安装
+
+      - name: 运行检测和通知脚本
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}  # 从 GitHub Secrets 中获取 Webhook URL
+        run: python scripts/check_and_notify.py
