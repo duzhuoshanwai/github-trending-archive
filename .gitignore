@@ -2,4 +2,3 @@
 __pychache__/
 *.pyc
 .python-version
-data/*
