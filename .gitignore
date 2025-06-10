@@ -2,3 +2,7 @@
 __pychache__/
 *.pyc
 .python-version
+<<<<<<< HEAD
+=======
+
+>>>>>>> b2eb258 (从.gitignore中移除data/*条目，修复actions自动提交失效)
